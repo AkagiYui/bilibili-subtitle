@@ -211,20 +211,10 @@ const SegmentCard = (props: {
             ? <BsPlusSquare className='cursor-pointer' onClick={onFold}/> :
             <BsDashSquare className='cursor-pointer' onClick={onFold}/>}
         </div>}
-      {summarizeEnable && <div className="tabs">
-        <a className="tab tab-lifted tab-xs tab-disabled cursor-default"></a>
-        <a className={classNames('tab tab-lifted tab-xs', curSummaryType === 'brief' && 'tab-active')} onClick={onSelBrief}><CgFileDocument/>总结</a>
-        <a className={classNames('tab tab-lifted tab-xs', curSummaryType === 'overview' && 'tab-active')} onClick={onSelOverview}><GrOverview/>概览</a>
-        <a className={classNames('tab tab-lifted tab-xs', curSummaryType === 'keypoint' && 'tab-active')} onClick={onSelKeypoint}><FaClipboardList/>要点</a>
-        <a className={classNames('tab tab-lifted tab-xs', curSummaryType === 'question' && 'tab-active')} onClick={onSelQuestion}><FaQuestion/>问题</a>
-        <a className="tab tab-lifted tab-xs tab-disabled cursor-default"></a>
-      </div>}
       <div
         className='absolute right-0 top-0 bottom-0 text-xs desc-lighter select-none flex-center'>{getLastTime(segment.items[segment.items.length - 1].to - segment.items[0].from)}</div>
     </div>
-    {summarizeEnable && <div ref={summarizeRef}>
-      <Summarize segment={segment} segmentIdx={segmentIdx} summary={summary}/>
-    </div>}
+
     {!segment.fold
       ? <div>
         {!compact && <div className='desc text-xs flex py-0.5'>

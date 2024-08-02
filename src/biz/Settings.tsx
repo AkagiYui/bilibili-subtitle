@@ -216,149 +216,10 @@ const Settings = () => {
             <button onClick={onSelFontSize2} className={classNames('btn btn-xs no-animation', fontSizeValue === 'large'?'btn-active':'')}>加大</button>
           </div>
         </FormItem>
-        <FormItem title='AI类型' tip='OPENAI质量更高'>
-          <div className="btn-group">
-            <button onClick={onSelOpenai} className={classNames('btn btn-xs no-animation', (!aiTypeValue || aiTypeValue === 'openai')?'btn-active':'')}>OpenAI</button>
-            <button onClick={onSelGemini} className={classNames('btn btn-xs no-animation', aiTypeValue === 'gemini'?'btn-active':'')}>Gemini</button>
-          </div>
-        </FormItem>
       </Section>
 
-      {(!aiTypeValue || aiTypeValue === 'openai') && <Section title='openai配置'>
-        <FormItem title='ApiKey' htmlFor='apiKey'>
-          <input id='apiKey' type='text' className='input input-sm input-bordered w-full' placeholder='sk-xxx'
-                 value={apiKeyValue} onChange={onChangeApiKeyValue}/>
-        </FormItem>
-        <FormItem title='服务器' htmlFor='serverUrl'>
-          <input id='serverUrl' type='text' className='input input-sm input-bordered w-full'
-                 placeholder={DEFAULT_SERVER_URL_OPENAI} value={serverUrlValue}
-                 onChange={e => setServerUrlValue(e.target.value)}/>
-        </FormItem>
-        <div>
-          <div className='desc text-xs text-center'>
-            <div className='flex justify-center font-semibold'>【官方地址】</div>
-            <div>官方网址：<a className='link link-primary' href='https://platform.openai.com/' target='_blank'
-                             rel="noreferrer">点击访问</a></div>
-            <div>服务器地址：<a className='link link-primary'
-                               onClick={() => setServerUrlValue(DEFAULT_SERVER_URL_OPENAI)}
-                               rel='noreferrer'>点击设置</a></div>
-            {/* <div className='flex justify-center font-semibold'>【第三方代理】</div> */}
-            {/* <div>代理网址：<a className='link link-primary' href='https://api.openai-up.com/register?aff=varM' */}
-            {/*                 target='_blank' */}
-            {/*                 rel="noreferrer">点击访问</a></div> */}
-            {/* <div>服务器地址：<a className='link link-primary' */}
-            {/*                   onClick={() => setServerUrlValue('https://api.openai-up.com')} */}
-            {/*                   rel='noreferrer'>点击设置</a></div> */}
-            {/* <div className='text-amber-600 flex justify-center items-center'><FaGripfire/>目前价格不到官方价格的6折<FaGripfire/></div> */}
-          </div>
-        </div>
-        <FormItem title='模型选择' htmlFor='modelSel' tip='注意，不同模型有不同价格与token限制'>
-          <select id='modelSel' className="select select-sm select-bordered" value={modelValue}
-                  onChange={onChangeModelValue}>
-            {MODELS.map(model => <option key={model.code} value={model.code}>{model.name}</option>)}
-          </select>
-        </FormItem>
-        <div className='desc text-xs'>
-          {MODEL_TIP}
-        </div>
-        {modelValue === 'custom' && <FormItem title='模型名' htmlFor='customModel'>
-          <input id='customModel' type='text' className='input input-sm input-bordered w-full' placeholder='llama2'
-                 value={customModelValue} onChange={onChangeCustomModelValue}/>
-        </FormItem>}
-        {modelValue === 'custom' && <FormItem title='Token上限' htmlFor='customModelTokens'>
-          <input id='customModelTokens' type='number' className='input input-sm input-bordered w-full'
-                 placeholder={'' + CUSTOM_MODEL_TOKENS}
-                 value={customModelTokensValue}
-                 onChange={e => setCustomModelTokensValue(e.target.value ? parseInt(e.target.value) : undefined)}/>
-        </FormItem>}
-      </Section>}
 
-      {aiTypeValue === 'gemini' && <Section title='gemini配置'>
-        <FormItem title='ApiKey' htmlFor='geminiApiKey'>
-          <input id='geminiApiKey' type='text' className='input input-sm input-bordered w-full' placeholder='xxx'
-                 value={geminiApiKeyValue} onChange={onChangeGeminiApiKeyValue}/>
-        </FormItem>
-        <div>
-          <div className='desc text-xs'>
-            <div>官方网址：<a className='link link-primary' href='https://makersuite.google.com/app/apikey'
-                             target='_blank'
-                             rel="noreferrer">Google AI Studio</a> (目前免费)
-            </div>
-            <div className='text-xs text-error flex items-center'><IoWarning className='text-sm text-warning'/>谷歌模型安全要求比较高，有些视频可能无法生成总结!
-            </div>
-          </div>
-        </div>
-      </Section>}
 
-      <Section title={<div className='flex items-center'>
-        翻译配置
-        {!apiKeySetted && <div className='tooltip tooltip-right ml-1' data-tip='未设置ApiKey无法使用'>
-          <IoWarning className='text-sm text-warning'/>
-        </div>}
-      </div>}>
-        <FormItem title='启用翻译' htmlFor='translateEnable'>
-          <input id='translateEnable' type='checkbox' className='toggle toggle-primary' checked={translateEnableValue}
-                 onChange={setTranslateEnableValue}/>
-        </FormItem>
-        <FormItem title='目标语言' htmlFor='language'>
-          <select id='language' className="select select-sm select-bordered" value={languageValue}
-                  onChange={onChangeLanguageValue}>
-            {LANGUAGES.map(language => <option key={language.code} value={language.code}>{language.name}</option>)}
-          </select>
-        </FormItem>
-        <FormItem title='翻译条数' tip='每次翻译条数'>
-          <div className='flex-1 flex flex-col'>
-            <input type="range" min={TRANSLATE_FETCH_MIN} max={TRANSLATE_FETCH_MAX} step={TRANSLATE_FETCH_STEP} value={fetchAmountValue} className="range range-primary" onChange={onFetchAmountChange} />
-            <div className="w-full flex justify-between text-xs px-2">
-              {transFetchAmountList.map(amount => <span key={amount}>{amount}</span>)}
-            </div>
-          </div>
-        </FormItem>
-        <FormItem title='翻译显示'>
-          <div className="btn-group">
-            <button onClick={onSel1} className={classNames('btn btn-xs no-animation', (!transDisplayValue || transDisplayValue === 'originPrimary')?'btn-active':'')}>原文为主</button>
-            <button onClick={onSel2} className={classNames('btn btn-xs no-animation', transDisplayValue === 'targetPrimary'?'btn-active':'')}>翻译为主</button>
-            <button onClick={onSel3} className={classNames('btn btn-xs no-animation', transDisplayValue === 'target'?'btn-active':'')}>仅翻译</button>
-          </div>
-        </FormItem>
-        <FormItem title='隐藏翻译' tip='取消自动翻译时,隐藏已翻译内容' htmlFor='hideOnDisableAutoTranslate'>
-          <input id='hideOnDisableAutoTranslate' type='checkbox' className='toggle toggle-primary' checked={hideOnDisableAutoTranslateValue}
-                 onChange={onChangeHideOnDisableAutoTranslate}/>
-        </FormItem>
-      </Section>
-      <Section title={<div className='flex items-center'>
-        总结配置
-        {!apiKeySetted && <div className='tooltip tooltip-right ml-1' data-tip='未设置ApiKey无法使用'>
-          <IoWarning className='text-sm text-warning'/>
-        </div>}
-      </div>}>
-        <FormItem title='启用总结' htmlFor='summarizeEnable'>
-          <input id='summarizeEnable' type='checkbox' className='toggle toggle-primary' checked={summarizeEnableValue}
-                 onChange={setSummarizeEnableValue}/>
-        </FormItem>
-        <FormItem title='浮动窗口' htmlFor='summarizeFloat' tip='当前总结离开视野时,是否显示浮动窗口'>
-          <input id='summarizeFloat' type='checkbox' className='toggle toggle-primary' checked={summarizeFloatValue}
-                 onChange={setSummarizeFloatValue}/>
-        </FormItem>
-        <FormItem title='总结语言' htmlFor='summarizeLanguage'>
-          <select id='summarizeLanguage' className="select select-sm select-bordered" value={summarizeLanguageValue} onChange={onChangeSummarizeLanguageValue}>
-            {LANGUAGES.map(language => <option key={language.code} value={language.code}>{language.name}</option>)}
-          </select>
-        </FormItem>
-        <FormItem htmlFor='words' title='分段字数' tip='注意，不同模型有不同字数限制'>
-          <div className='flex-1 flex flex-col'>
-            <input id='words' type='number' className='input input-sm input-bordered w-full' placeholder={`默认为上限x${WORDS_RATE}`} value={wordsValue??''} onChange={e => setWordsValue(e.target.value?parseInt(e.target.value):undefined)}/>
-            {/* <input type="range" min={WORDS_MIN} max={WORDS_MAX} step={WORDS_STEP} value={wordsValue} className="range range-primary" onChange={onWordsChange} /> */}
-            {/* <div className="w-full flex justify-between text-xs px-2"> */}
-            {/*  {wordsList.map(words => <span key={words}>{words}</span>)} */}
-            {/* </div> */}
-          </div>
-        </FormItem>
-        <div className='desc text-xs'>
-          当前选择的模型的分段字数上限是<span className='font-semibold font-mono'>{aiTypeValue === 'gemini'?GEMINI_TOKENS:(MODEL_MAP[modelValue??MODEL_DEFAULT]?.tokens??'未知')}</span>
-          （太接近上限总结会报错）
-        </div>
-      </Section>
       <Section title={<div className='flex items-center'>
         搜索配置
       </div>}>
@@ -371,39 +232,8 @@ const Settings = () => {
                  onChange={setCnSearchEnabledValue}/>
         </FormItem>
       </Section>
-      <Section title={<div className='flex items-center'>
-        提问配置
-      </div>}>
-        <FormItem title='启用提问' htmlFor='askEnabled' tip='是否启用字幕提问功能'>
-          <input id='askEnabled' type='checkbox' className='toggle toggle-primary' checked={askEnabledValue}
-                 onChange={setAskEnabledValue}/>
-        </FormItem>
-      </Section>
 
-      <Section title='提示词配置'>
-        <div className='flex justify-center'>
-          <a className='text-xs link link-primary' onClick={togglePromptsFold}>点击{promptsFold ? '展开' : '折叠'}</a>
-        </div>
-        {!promptsFold && PROMPT_TYPES.map((item, idx) => <FormItem key={item.type} title={<div>
-          <div>{item.name}</div>
-          <div className='link text-xs' onClick={() => {
-            setPromptsValue({
-              ...promptsValue,
-              // @ts-expect-error
-              [item.type]: PROMPT_DEFAULTS[item.type] ?? ''
-            })
-          }}>点击填充默认
-          </div>
-        </div>} htmlFor={`prompt-${item.type}`}>
-          <textarea id={`prompt-${item.type}`} className='mt-2 textarea input-bordered w-full'
-                    placeholder='留空使用默认提示词' value={promptsValue[item.type] ?? ''} onChange={(e) => {
-                      setPromptsValue({
-                        ...promptsValue,
-                        [item.type]: e.target.value
-                      })
-                    }}/>
-        </FormItem>)}
-      </Section>
+
 
       <div className='flex justify-center gap-5'>
         <button className='btn btn-primary btn-sm' onClick={onSave}>保存</button>
